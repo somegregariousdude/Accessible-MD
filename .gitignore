@@ -9,6 +9,7 @@ node_modules/
 
 # Hugo Cache
 .hugo_build.lock
-# Build error log
+# Other Items
 errors.txt
 content/styleguide/
+AI_Coding_Instructions.txt
