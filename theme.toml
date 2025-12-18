@@ -1,0 +1,12 @@
+name = "Accessible-MD"
+license = "MIT"
+licenselink = "https://github.com/somegregariousdude/accessible-md/blob/main/LICENSE"
+description = "An IndieWeb-focused, accessibility-first Hugo theme built with Material Design 3."
+homepage = "https://github.com/somegregariousdude/accessible-md"
+tags = ["blog", "responsive", "accessibility", "material-design", "indieweb", "light", "dark"]
+features = ["blog", "responsive", "wcag", "material-design-3"]
+min_version = "0.141.0"
+
+[author]
+  name = "Gregory Lopez"
+  homepage = "https://simplygregario.us"
