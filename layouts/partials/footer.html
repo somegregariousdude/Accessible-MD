@@ -8,16 +8,17 @@
 
     <nav class="footer-nav">
       <ul>
-        {{/* Utility Links Only */}}
-        {{/* FIX: URL corrected to /accessibility/ to match permalink config */}}
-        <li><a href="/accessibility/">Accessibility</a></li>
+        {{/* Utility Links */}}
+        {{ if .Site.GetPage "/accessibility" }}
+          <li><a href="/accessibility/">Accessibility</a></li>
+        {{ end }}
         <li><a href="/index.xml">RSS</a></li>
         <li><a href="/index.json">JSON</a></li>
       </ul>
     </nav>
     <p class="copyright">
       &copy; {{ now.Year }} {{ .Site.Params.author.name }}. 
-      Built with <a href="https://gohugo.io">Hugo</a> &amp; Accessible-MD.
+      Built with <a href="https://gohugo.io">Hugo</a> &amp; <a href="https://github.com/somegregariousdude/accessible-md">Accessible-MD</a>.
     </p>
   </div>
 </footer>

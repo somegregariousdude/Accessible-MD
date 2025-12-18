@@ -2,9 +2,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
 
-{{/* CSS Loading (Modern Hugo Syntax) */}}
+{{/* CSS Loading */}}
 {{ $options := (dict "targetPath" "css/style.css" "outputStyle" "compressed") }}
-{{/* FIX: resources.ToCSS -> css.Sass */}}
 {{ $style := resources.Get "scss/main.scss" | css.Sass $options }}
 <link rel="stylesheet" href="{{ $style.Permalink }}">
 
@@ -13,21 +12,28 @@
   (function() {
     try {
       const validThemes = ['sound', 'market', 'mountain', 'forest', 'sunset'];
-      const savedTheme = localStorage.getItem('greg_theme');
-      // Only apply if the value is strictly in our allowlist
+      const savedTheme = localStorage.getItem('accessible_md_theme');
       if (validThemes.includes(savedTheme)) {
         document.documentElement.setAttribute('data-theme', savedTheme);
       }
-    } catch (e) {
-      // Fail silently (Privacy settings might block LocalStorage)
-    }
+    } catch (e) {}
   })();
 </script>
 
 <meta name="generator" content="Hugo {{ hugo.Version }}" />
+
 {{/* IndieWeb Metadata */}}
-<link rel="webmention" href="https://webmention.io/{{ .Site.Params.webmentions.username }}/webmention" />
-<link rel="pingback" href="https://webmention.io/{{ .Site.Params.webmentions.username }}/xmlrpc" />
+{{ with .Site.Params.webmentions.username }}
+<link rel="webmention" href="https://webmention.io/{{ . }}/webmention" />
+<link rel="pingback" href="https://webmention.io/{{ . }}/xmlrpc" />
+{{ end }}
+
 <link rel="authorization_endpoint" href="https://indieauth.com/auth">
 <link rel="token_endpoint" href="https://tokens.indieauth.com/token">
-<link rel="me" href="https://github.com/somegregariousdude" />
+
+{{/* Dynamic Rel-Me Links */}}
+{{ range .Site.Params.social }}
+  {{ if .url }}
+    <link rel="me" href="{{ .url }}" />
+  {{ end }}
+{{ end }}

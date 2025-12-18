@@ -5,7 +5,7 @@
 # SAFETY: Wipes 'icons/' dir first to remove orphaned files.
 # ==============================================================================
 
-ICON_DIR="themes/Accessible-MD/layouts/partials/icons"
+ICON_DIR="layouts/partials/icons"
 
 # 1. CLEANUP
 echo "--- Cleaning Icon Directory ---"

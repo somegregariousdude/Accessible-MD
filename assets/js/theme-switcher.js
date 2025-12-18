@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Apply Logic
       document.documentElement.setAttribute('data-theme', selectedTheme);
-      localStorage.setItem('greg_theme', selectedTheme);
+      localStorage.setItem('accessible_md_theme', selectedTheme);
 
       // Update UI State
       themeButtons.forEach(b => b.setAttribute('aria-pressed', 'false'));
