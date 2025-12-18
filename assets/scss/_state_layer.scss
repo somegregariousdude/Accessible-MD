@@ -1,0 +1,12 @@
+/* MD3 State Layer Mixin */
+@mixin state-layer($color: currentColor) {
+  position: relative; overflow: hidden;
+  &::before {
+    content: ""; position: absolute; inset: 0; background-color: $color;
+    opacity: 0; z-index: 1; pointer-events: none;
+    transition: opacity 0.2s var(--md-sys-motion-easing-standard, ease);
+  }
+  &:hover::before { opacity: 0.08; }
+  &:focus-visible::before { opacity: 0.12; }
+  &:active::before { opacity: 0.12; }
+}

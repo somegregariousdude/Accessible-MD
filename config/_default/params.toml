@@ -1,0 +1,95 @@
+# ==============================================================================
+# FILE: config/_default/params.toml
+# PURPOSE: Site-wide Variables and IndieWeb Configuration
+# CONTEXT: Source [20-47]
+# ==============================================================================
+
+# [CRITICAL] IndieAuth Endpoints
+# These must be at the TOP so they belong to the root Params object.
+authorization_endpoint = "https://indieauth.com/auth"
+token_endpoint = "https://tokens.indieauth.com/token"
+
+# [Source: 21] Author Metadata for H-Card and SEO
+[author]
+  name = "Gregory Lopez"
+  bio = "I'm a gay, blind, middle-aged guy from the Pacific Northwest. As an Apple and Linux fan, I enjoy tinkering with tech and coding. Audiobooks, podcasts, and retro media from the 1970s to the early 2000s are my jam. I also love good food, drinks, and laughter with friends, plus a little cannabis to keep things mellow."
+  photo = "images/profile_photo.jpg"
+
+  [author.location]
+    city = "Burien"
+    state = "Washington"
+    country = "USA"
+
+# [Source: 26] Webmention.io Integration
+[webmentions]
+  enable = true
+  show_webmentions = true
+  username = "simplygregario.us"
+  guestbookIntro = "Greetings... Think of this page as a virtual guestbook lying on a desk with a pen beside it, inviting visitors like you to sign it and leave a message."
+
+# [Source: 31] Contact Form Settings
+[contact]
+  formAction = "https://formspree.io/f/xblwegvw"
+  intro = "Have a question or just want to say hi? Send me a message!"
+
+# [Source: 34] Visual Theming
+[theme]
+  colorScheme = "sound"
+
+# [Source: 36] Social Media
+[[social]]
+  name = "BlueSky"
+  handle = "@somegregariousdude.bsky.social"
+  url = "https://bsky.app/profile/somegregariousdude.bsky.social"
+  rel = "nofollow"
+  icon = "bluesky"
+
+[[social]]
+  name = "Friendica"
+  handle = "@thegregariousdragon@social.trom.tf"
+  url = "https://social.trom.tf/profile/thegregariousdragon"
+  rel = "me"
+  icon = "friendica"
+
+[[social]]
+  name = "GitHub"
+  handle = "somegregariousdude"
+  url = "https://github.com/somegregariousdude"
+  rel = "me"
+  icon = "github"
+
+[[social]]
+  name = "Lemmy"
+  handle = "u/somegregariousdude"
+  url = "https://rblind.com/u/somegregariousdude"
+  rel = "nofollow"
+  icon = "lemmy"
+
+[[social]]
+  name = "Mastodon"
+  handle = "@somegregariousdude@dragonscave.space"
+  url = "https://dragonscave.space/@somegregariousdude"
+  rel = "me"
+  icon = "mastodon"
+
+[[social]]
+  name = "PeerTube"
+  handle = "@somegregariousdude@video.4d2.org"
+  url = "https://video.4d2.org/@somegregariousdude"
+  rel = "nofollow"
+  icon = "peertube"
+
+# [Source: 45] Instant Messaging
+[[im]]
+  name = "Signal"
+  handle = "gregarious.42"
+  url = "https://signal.me/#eu/UOIs6b3CzdqYravUXj1jihHuK-QLTKLWYBcjiUz4XGOfuyXGdQdExKbPH3633UxT"
+  rel = "nofollow"
+  icon = "signal"
+  
+  [[im]]
+  name = "SimpleX"
+  handle = "Gregory Lopez"
+  url = "https.smp15.simplex.im/a#2XKhZFdQoRskGLNVIpe4rU28lzDmBScikeImDMbPJXc"
+  rel = "nofollow"
+  icon = "simplex"

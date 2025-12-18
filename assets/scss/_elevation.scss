@@ -1,0 +1,16 @@
+/* MD3 Elevation System (Surface Tones) */
+@mixin elevation($level) {
+  --elevation-tint: 0;
+  @if $level == 1 { --elevation-tint: 0.05; }
+  @if $level == 2 { --elevation-tint: 0.08; }
+  @if $level == 3 { --elevation-tint: 0.11; }
+  @if $level == 4 { --elevation-tint: 0.12; }
+  @if $level == 5 { --elevation-tint: 0.14; }
+  background-image: linear-gradient(
+    rgba(var(--md-elevation-overlay), var(--elevation-tint)),
+    rgba(var(--md-elevation-overlay), var(--elevation-tint))
+  );
+  background-color: color-mix(in srgb, var(--md-elevation-overlay) calc(var(--elevation-tint) * 100%), var(--md-sys-color-surface));
+  @supports not (background-color: color-mix(in srgb, red, blue)) { background-color: var(--md-sys-color-surface); }
+  @media (prefers-color-scheme: light) { box-shadow: 0px #{$level}px #{$level * 2}px rgba(0, 0, 0, 0.1); }
+}

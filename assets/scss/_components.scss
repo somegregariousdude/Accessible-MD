@@ -1,0 +1,731 @@
+/* COMPONENT STYLES */
+/* (Keeping all existing styles, just patching Syndication & Chips) */
+
+.outlined-card {
+  background-color: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-medium);
+  padding: 16px;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.outlined-card:hover {
+  border-color: var(--md-sys-color-outline);
+  background-color: rgba(var(--md-sys-color-primary), 0.05);
+}
+
+/* Chips */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-size: 0.875rem;
+  margin-bottom: 8px;
+  gap: 8px;
+}
+
+.chip-icon svg, .brand-icon svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+  display: block;
+}
+
+.social-links, .im-links {
+  list-style: none;
+  padding: 0;
+}
+
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+/* Webmentions */
+.webmentions-container {
+  margin-top: 24px;
+}
+
+/* Header Layouts */
+.headline-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.headline-row h1 {
+  margin: 0;
+}
+
+.chip-icon-only {
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 50%;
+  padding: 8px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  color: var(--md-sys-color-primary);
+}
+
+.chip-icon-only:hover {
+  background-color: rgba(var(--md-sys-color-primary), 0.1);
+}
+
+.feed-header .headline-row {
+  margin-bottom: 4px;
+}
+
+.headline-row h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.3;
+}
+
+.headline-row a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.headline-row a:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--md-sys-color-primary);
+}
+
+/* [Patch] Mobile Profile Photo Fix */
+.u-photo {
+  max-width: 100%;
+  height: auto;
+  border-radius: 50%;
+}
+
+/* [Patch] MD3 Search Bar */
+:root {
+  --pagefind-ui-border-radius: 24px;
+  --pagefind-ui-font: 'Noto Sans', sans-serif;
+  --pagefind-ui-primary: var(--md-sys-color-primary);
+  --pagefind-ui-text: var(--md-sys-color-on-surface);
+  --pagefind-ui-background: var(--md-sys-color-surface);
+  --pagefind-ui-border: var(--md-sys-color-outline);
+}
+
+.pagefind-ui__search-input {
+  border-radius: 28px !important;
+  padding-left: 24px !important;
+  padding-right: 24px !important;
+  border: 1px solid var(--md-sys-color-outline) !important;
+  background-color: var(--md-sys-color-surface) !important;
+  transition: border-color 0.2s var(--md-sys-motion-easing-standard);
+}
+
+.pagefind-ui__search-input:focus {
+  outline: 2px solid var(--md-sys-color-primary) !important;
+  outline-offset: 2px;
+  border-color: var(--md-sys-color-primary) !important;
+}
+
+.pagefind-ui__drawer {
+  background-color: var(--md-sys-color-surface) !important;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-medium);
+  margin-top: 8px;
+}
+
+/* [Patch] MD3 State Layers */
+.feed-item {
+  @include state-layer;
+}
+
+.chip {
+  @include state-layer(var(--md-sys-color-primary));
+}
+
+.chip:hover {
+  background-color: transparent;
+}
+
+/* [Patch] Social Link State Layers */
+.social-link {
+  padding: 8px 12px; 
+  border-radius: 8px;
+  margin: -8px -12px; 
+  @include state-layer(var(--md-sys-color-primary));
+}
+
+/* [Patch] Code Block Copy Button */
+.copy-code-btn {
+  border-radius: 50%;
+  border: 1px solid var(--md-sys-color-outline);
+  @include state-layer(var(--md-sys-color-primary));
+  transition: opacity 0.2s var(--md-sys-motion-easing-standard), background-color 0.2s;
+}
+
+.copy-code-btn:hover {
+  background-color: transparent; 
+  border-color: var(--md-sys-color-primary);
+}
+
+/* [Patch] Search Results Elevation */
+.pagefind-ui__drawer {
+  @include elevation(2);
+}
+
+/* [Patch] Pagefind Results Polish */
+.pagefind-ui__drawer {
+  background-color: var(--md-sys-color-surface) !important;
+  border: 1px solid var(--md-sys-color-outline-variant) !important;
+  border-radius: 12px !important;
+  box-shadow: none !important;
+  padding: 8px !important;
+  margin-top: 8px !important;
+}
+
+.pagefind-ui__result {
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 12px !important;
+  margin-bottom: 4px !important;
+  transition: background-color 0.2s var(--md-sys-motion-easing-standard);
+  
+  &:hover, &:focus-within {
+    background-color: rgba(var(--md-sys-color-primary), 0.08) !important;
+  }
+}
+
+.pagefind-ui__result-thumb {
+  border-radius: 8px !important;
+  width: 64px !important;
+  height: 64px !important;
+  object-fit: cover;
+  background-color: var(--md-sys-color-outline-variant);
+}
+
+.pagefind-ui__result-title {
+  font-family: 'Noto Serif', serif !important;
+  font-weight: 600 !important;
+  font-size: 1.125rem !important;
+  color: var(--md-sys-color-primary) !important;
+}
+
+.pagefind-ui__result-excerpt {
+  font-family: 'Noto Sans', sans-serif !important;
+  font-size: 0.95rem !important;
+  color: var(--md-sys-color-on-surface) !important;
+  margin-top: 4px !important;
+}
+
+.pagefind-ui__result-excerpt mark {
+  background-color: rgba(var(--md-sys-color-tertiary), 0.3) !important;
+  color: inherit !important;
+  border-radius: 2px;
+  padding: 0 2px;
+  font-weight: 700;
+}
+
+.pagefind-ui__suppressed {
+  color: var(--md-sys-color-on-surface) !important;
+  opacity: 0.7;
+}
+.pagefind-ui__button {
+  background: var(--md-sys-color-surface) !important;
+  color: var(--md-sys-color-primary) !important;
+  border: 1px solid var(--md-sys-color-outline) !important;
+  border-radius: 20px !important;
+  margin-top: 12px;
+}
+
+/* [Patch] MD3 Snackbar */
+.md-toast {
+  visibility: hidden;
+  min-width: 250px;
+  max-width: 90vw;
+  background-color: var(--md-sys-color-on-surface);
+  color: var(--md-sys-color-surface);
+  text-align: center;
+  border-radius: 4px;
+  padding: 14px 16px;
+  position: fixed;
+  z-index: 2000;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%) translateY(100%);
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: transform 0.3s var(--md-sys-motion-easing-emphasized), 
+              opacity 0.3s linear, 
+              visibility 0s linear 0.3s;
+  opacity: 0;
+  box-shadow: 0 3px 5px -1px rgba(0,0,0,0.2), 
+              0 6px 10px 0 rgba(0,0,0,0.14), 
+              0 1px 18px 0 rgba(0,0,0,0.12);
+}
+
+.md-toast.show {
+  visibility: visible;
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  transition: transform 0.3s var(--md-sys-motion-easing-emphasized), 
+              opacity 0.3s linear, 
+              visibility 0s linear 0s;
+}
+
+/* [Patch] Fix Generic Card Hover */
+.outlined-card:hover {
+  background-color: var(--md-sys-color-surface);
+  border-color: var(--md-sys-color-outline-variant);
+}
+
+.feed-item:hover {
+  border-color: var(--md-sys-color-outline);
+}
+
+/* [Patch] Webmention Layout */
+.mention {
+  margin-bottom: 1rem;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mention-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Noto Sans', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--md-sys-color-on-surface);
+}
+
+.mention-author img.u-photo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.mention-author a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.mention-author a:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--md-sys-color-primary);
+}
+
+.mention-content {
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--md-sys-color-on-surface);
+}
+
+.mention time {
+  font-size: 0.85rem;
+  color: var(--md-sys-color-outline);
+  margin-top: 4px;
+  display: block;
+}
+
+/* [Patch] Post Metadata Styles */
+.post-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 8px;
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+  color: var(--md-sys-color-outline);
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.meta-icon svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.dt-updated-label {
+  font-style: italic;
+  opacity: 0.8;
+  margin-left: 4px;
+}
+
+/* [Patch] Webmention Copy Field */
+.webmention-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  padding-bottom: 12px;
+}
+
+.webmention-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.webmention-copy-field {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 24px;
+  padding: 4px 4px 4px 16px;
+  max-width: 100%;
+}
+
+.url-text {
+  font-family: monospace;
+  font-size: 0.85rem;
+  color: var(--md-sys-color-on-surface);
+  margin-right: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+.copy-btn {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  @include state-layer(currentColor);
+}
+
+.copy-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+/* [Patch] MD3 Context Blocks */
+.context-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.context-block {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background-color: rgba(var(--md-sys-color-primary), 0.08);
+  color: var(--md-sys-color-on-surface);
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 0.95rem;
+}
+
+.context-icon svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--md-sys-color-primary);
+  display: block;
+}
+
+.context-label {
+  font-weight: 600;
+  color: var(--md-sys-color-primary);
+  white-space: nowrap;
+}
+
+.context-link {
+  text-decoration: none;
+  color: var(--md-sys-color-on-surface);
+  opacity: 0.8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-left: auto;
+  @include state-layer(var(--md-sys-color-primary));
+}
+
+.context-mini {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-size: 0.85rem;
+  color: var(--md-sys-color-outline);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.context-mini svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.context-mini a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px dotted currentColor;
+}
+
+/* [Patch] Syndication Styles (CLEANUP) */
+/* We remove the border/padding here, as .post-footer handles it now */
+.syndication-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.syndication-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--md-sys-color-outline);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.syndication-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip.u-syndication {
+  @include state-layer(var(--md-sys-color-secondary));
+  border-color: var(--md-sys-color-outline-variant);
+}
+
+/* [Patch] MD3 Hero Card & Chip Styles */
+.md-hero-card {
+  @include elevation(1);
+  background-color: var(--md-sys-color-surface-container-high) !important;
+  border-radius: 20px;
+}
+
+.hero-content-wrapper {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.hero-avatar-area {
+  grid-column: 1;
+  text-align: center;
+}
+
+.hero-avatar-area h1 {
+  font-size: 2rem;
+  margin-bottom: 12px;
+}
+
+.hero-details-area {
+  grid-column: 2;
+  padding-top: 12px;
+}
+
+.social-chips-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+  list-style: none;
+}
+
+.social-chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 20px;
+  padding: 6px 12px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background-color: var(--md-sys-color-surface);
+  text-decoration: none;
+  font-size: 0.9rem;
+  color: var(--md-sys-color-on-surface);
+  @include state-layer(var(--md-sys-color-primary));
+}
+
+.social-chip .brand-icon {
+  margin-right: 6px;
+  color: var(--md-sys-color-primary);
+}
+
+.social-chip:hover {
+  background-color: var(--md-sys-color-surface) !important;
+  border-color: var(--md-sys-color-outline);
+}
+
+@media (max-width: 768px) {
+  .hero-content-wrapper {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .hero-avatar-area {
+    grid-column: 1;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .hero-avatar-area h1 {
+    display: none;
+  }
+  .u-photo {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+.profile-meta.is-mobile-hidden {
+  display: none;
+}
+.profile-meta.is-desktop-hidden {
+  display: block;
+}
+
+@media (min-width: 769px) {
+  .profile-meta.is-mobile-hidden {
+    display: block;
+  }
+  .profile-meta.is-desktop-hidden {
+    display: none;
+  }
+}
+
+/* [New] Theme Switcher UI */
+.theme-picker-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.theme-picker-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--md-sys-color-outline);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.theme-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Override default chip styles for the toggle buttons */
+.theme-btn.chip {
+  cursor: pointer;
+  background-color: transparent;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.theme-btn.chip:hover {
+  background-color: rgba(var(--md-sys-color-primary), 0.05);
+  border-color: var(--md-sys-color-primary);
+}
+
+/* Active State (Aria-Pressed) */
+.theme-btn.chip[aria-pressed="true"] {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  border-color: transparent;
+}
+
+.color-dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.1); /* Subtle definition */
+}
+
+/* [New] Theme Switcher UI */
+.theme-picker-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.theme-picker-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--md-sys-color-outline);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.theme-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Override default chip styles for the toggle buttons */
+.theme-btn.chip {
+  cursor: pointer;
+  background-color: transparent;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.theme-btn.chip:hover {
+  background-color: rgba(var(--md-sys-color-primary), 0.05);
+  border-color: var(--md-sys-color-primary);
+}
+
+/* Active State (Aria-Pressed) */
+.theme-btn.chip[aria-pressed="true"] {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  border-color: transparent;
+}
+
+.color-dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.1); /* Subtle definition */
+}
+
+/* [Patch] Lighthouse Contrast Fix (Theme Aware) */
+.theme-picker-label {
+  /* Use Primary Color for high contrast + theme harmony */
+  color: var(--md-sys-color-primary) !important;
+  font-weight: 600; 
+  opacity: 1; /* Remove opacity to ensure sharp contrast ratio */
+}

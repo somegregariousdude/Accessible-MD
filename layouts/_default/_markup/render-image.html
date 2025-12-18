@@ -1,0 +1,45 @@
+{{- $img := .Page.Resources.GetMatch .Destination -}}
+{{/* Priority: 1. Markdown Text, 2. Front Matter Resource Param, 3. Empty */}}
+{{- $alt := .PlainText | default "" -}}
+{{- if and (eq $alt "") $img -}}
+  {{- $alt = $img.Params.alt | default "" -}}
+{{- end -}}
+{{- $caption := .Title | default "" -}}
+
+<figure class="md-figure {{ if not $img }}md-figure-remote{{ end }}">
+  {{- if $img -}}
+    {{/* LOCAL IMAGE PROCESSING */}}
+    {{- $tiny := $img.Resize "480x webp" -}}
+    {{- $small := $img.Resize "800x webp" -}}
+    {{- $medium := $img.Resize "1200x webp" -}}
+    
+    {{/* MICROFORMAT: u-photo applied */}}
+    <img 
+      class="md-image u-photo" 
+      src="{{ $small.RelPermalink }}" 
+      srcset="
+        {{ $tiny.RelPermalink }} 480w,
+        {{ $small.RelPermalink }} 800w,
+        {{ $medium.RelPermalink }} 1200w"
+      sizes="(max-width: 600px) 100vw, 800px"
+      alt="{{ $alt }}"
+      loading="lazy"
+      width="{{ $img.Width }}"
+      height="{{ $img.Height }}"
+    >
+  {{- else -}}
+    {{/* REMOTE IMAGE FALLBACK */}}
+    {{/* MICROFORMAT: u-photo applied */}}
+    <img 
+      class="md-image u-photo" 
+      src="{{ .Destination | safeURL }}" 
+      alt="{{ $alt }}" 
+      title="{{ $caption }}"
+      loading="lazy"
+    >
+  {{- end -}}
+
+  {{- if $caption -}}
+    <figcaption class="md-figcaption">{{ $caption | safeHTML }}</figcaption>
+  {{- end -}}
+</figure>

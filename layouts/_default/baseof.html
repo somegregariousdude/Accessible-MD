@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode }}">
+<head>
+  {{ partial "head.html" . }}
+</head>
+<body>
+  {{ partial "header.html" . }}
+
+  <main id="main-content" class="main-container">
+    {{ block "main" . }}{{ end }}
+  </main>
+
+  {{ partial "footer.html" . }}
+
+  {{/* Toast Notification Container */}}
+  <div id="toast-container" class="md-toast" role="status" aria-live="polite"></div>
+
+  {{/* JS Modules */}}
+  {{ $menu := resources.Get "js/menu.js" }}
+  {{ $lite := resources.Get "js/youtube-lite.js" }}
+  {{ $pt := resources.Get "js/peertube-lite.js" }}
+  {{ $bsky := resources.Get "js/bluesky-lite.js" }}
+  {{ $copy := resources.Get "js/copy-code.js" }}
+  {{ $share := resources.Get "js/share.js" }}
+  {{ $webmentions := resources.Get "js/webmentions.js" }}
+  {{/* NEW: Theme Switcher */}}
+  {{ $themes := resources.Get "js/theme-switcher.js" }}
+  
+  {{ $js := slice $menu $lite $pt $bsky $copy $share $webmentions $themes | resources.Concat "js/bundle.js" | resources.Minify }}
+  <script src="{{ $js.Permalink }}" defer></script>
+</body>
+</html>

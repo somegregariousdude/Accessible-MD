@@ -1,0 +1,33 @@
+{{ define "main" }}
+<article class="single-post h-entry outlined-card pages">
+  
+  {{/* Simple Header for Pages */}}
+  <header class="post-header">
+    <div class="headline-row">
+      {{ partial "ui/chip.html" . }}
+      <h1 class="p-name">{{ .Title }}</h1>
+    </div>
+  </header>
+
+  <div class="e-content">{{ .Content }}</div>
+
+  {{/* Pages usually don't have syndication, but they MIGHT have tags (e.g. Accessibility) */}}
+  {{ if .Params.tags }}
+  <footer class="post-footer">
+    <ul class="tags">
+      {{ range .Params.tags }}
+      <li>
+        <a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}" rel="tag">
+          {{/* [ACCESSIBILITY FIX] */}}
+          <span>#</span><span class="p-category">{{ . }}</span>
+        </a>
+      </li>
+      {{ end }}
+    </ul>
+  </footer>
+  {{ end }}
+</article>
+
+{{/* Pages usually don't show webmentions or share buttons by default in this design, 
+     but we leave them out to keep pages clean unless requested. */}}
+{{ end }}

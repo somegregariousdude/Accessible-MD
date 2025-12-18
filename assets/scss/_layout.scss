@@ -1,0 +1,324 @@
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.site-header {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface);
+  position: sticky; top: 0; z-index: 100; max-height: 100vh; overflow-y: auto; /* For z-index context */
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.site-title {
+  font-family: 'Noto Serif', serif;
+  font-weight: 700;
+  font-size: 1.25rem;
+  text-decoration: none;
+  color: var(--md-sys-color-on-surface);
+}
+
+/* --- Desktop Navigation (Default) --- */
+.nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.nav-list a {
+  text-decoration: none;
+  color: var(--md-sys-color-on-surface);
+  font-weight: 500;
+}
+
+.nav-list a[aria-current="page"] {
+  color: var(--md-sys-color-primary);
+  border-bottom: 2px solid var(--md-sys-color-primary);
+}
+
+/* --- Mobile Toggle Button --- */
+.menu-toggle {
+  display: none; /* Hidden on Desktop */
+  background: none;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 8px;
+  color: var(--md-sys-color-primary);
+}
+
+.menu-toggle .icon-box svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+  display: block;
+}
+
+/* --- Mobile Responsive States --- */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block; /* Show button */
+  }
+
+  .site-header {
+    padding-bottom: 8px;
+  }
+
+  #main-nav {
+    width: 100%; /* Force new line */
+    margin-top: 16px;
+  }
+
+  /* Hidden State */
+  .nav-list {
+    display: none; 
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    padding-bottom: 16px;
+  }
+
+  /* Expanded State (Toggled via JS) */
+  .nav-list.is-open {
+    display: flex;
+    animation: slideDown 0.2s ease-out;
+  }
+
+  .nav-list li {
+    width: 100%;
+  }
+
+  .nav-list a {
+    display: block;
+    padding: 12px;
+    background-color: rgba(var(--md-sys-color-primary), 0.05);
+    border-radius: 8px;
+  }
+  
+  .nav-list a:hover {
+     background-color: rgba(var(--md-sys-color-primary), 0.1);
+  }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.site-footer {
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+  margin-top: 32px;
+  padding: 16px 0;
+}
+
+.feed-item {
+  margin-bottom: 16px;
+}
+
+/* Section Intro (Added Phase 02o) */
+.section-intro {
+  margin-bottom: 24px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--md-sys-color-on-surface);
+  max-width: 65ch; /* Optimal reading width for introductory text */
+}
+
+/* [Patch] MD3 Navigation Drawer Upgrade */
+@media (max-width: 768px) {
+  /* The Drawer Itself */
+  .nav-list {
+    display: block; /* Always exist in DOM for transitions */
+    position: fixed;
+    top: 0;
+    right: 0; /* Slide in from Right */
+    width: 300px; /* Standard MD3 width */
+    max-width: 80%;
+    height: 100vh;
+    background-color: var(--md-sys-color-surface);
+    border-left: 1px solid var(--md-sys-color-outline-variant);
+    box-shadow: -4px 0 12px rgba(0,0,0,0.2); /* Scrim shadow */
+    padding: 72px 16px 24px 16px; /* Top padding to clear close button space */
+    z-index: 1000;
+    
+    /* Animation State: Closed */
+    transform: translateX(100%);
+    transition: transform 0.3s var(--md-sys-motion-easing-standard); /* MD3 Standard Easing */
+    overflow-y: auto;
+  }
+
+  /* Animation State: Open */
+  .nav-list.is-open {
+    display: block;
+    transform: translateX(0);
+  }
+
+  /* The Backdrop (Scrim) */
+  /* We use the ::before pseudo-element on the nav container when open */
+  #main-nav.has-scrim::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 999;
+    animation: fadeIn 0.3s;
+  }
+
+  /* Close Button visibility */
+  .menu-toggle {
+    position: relative;
+    z-index: 1001; /* Above the drawer so it can toggle back */
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* [Patch] Safari Visibility Fix */
+@media (max-width: 768px) {
+  .nav-list {
+    /* VISIBILITY LOCK: Ensure it is completely hidden when closed */
+    visibility: hidden;
+    
+    /* Transition: Transform (slide) + Visibility (delayed hide) */
+    /* We delay hiding visibility (0.3s) so the slide animation finishes first */
+    transition: transform 0.3s var(--md-sys-motion-easing-standard), visibility 0s linear 0.3s;
+    
+    /* Safety: Ensure Safari treats this as a fixed layer */
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+  }
+
+  .nav-list.is-open {
+    /* VISIBILITY UNLOCK: Show immediately when open */
+    visibility: visible;
+    
+    /* Remove delay so it appears instantly as it slides in */
+    transition: transform 0.3s var(--md-sys-motion-easing-standard), visibility 0s linear 0s;
+    
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+}
+
+/* [Patch] MD3 State Layers */
+.nav-list a {
+  @include state-layer(var(--md-sys-color-primary));
+  /* Remove old hover background */
+  &:hover { background-color: transparent; }
+}
+
+/* [Patch] MD3 State Layers */
+.nav-list a {
+  @include state-layer(var(--md-sys-color-primary));
+  /* Remove old hover background */
+  &:hover { background-color: transparent; }
+}
+
+/* [Patch] MD3 Elevation Application */
+.site-header {
+  /* Level 2: Standard for Top App Bars */
+  @include elevation(2);
+  /* Ensure border stays visible or remove it if elevation is enough separation */
+  border-bottom: 1px solid rgba(var(--md-sys-color-outline), 0.2); 
+}
+
+@media (max-width: 768px) {
+  .nav-list {
+    /* Level 3: Modal Navigation Drawer sits above the header */
+    @include elevation(3);
+  }
+}
+
+/* [Patch] MD3 Navigation Active Pill */
+.nav-list a {
+  /* Reset the padding added by state layers for uniformity */
+  padding: 8px 12px;
+  border-radius: 20px;
+}
+
+.nav-list a[aria-current="page"] {
+  /* Remove old underline */
+  border-bottom: none;
+  /* Add MD3 Pill look: Tinted background */
+  background-color: rgba(var(--md-sys-color-primary), 0.12); 
+  color: var(--md-sys-color-primary); /* Primary text on Tinted Primary background */
+  font-weight: 700;
+}
+
+/* [Patch] Base Post Footer (Articles, Pages, Photos) */
+.post-footer {
+  margin-top: 32px;
+  padding-top: 16px;
+  /* Default: Solid line for standard "Page" feel */
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+}
+
+/* [Patch] Lighthouse Touch Target Fix */
+/* Enforces Android/WCAG recommended minimum touch size of 48x48px */
+.main-nav a,
+.footer-nav a {
+  display: flex;
+  align-items: center;
+  min-height: 48px; 
+  padding: 0 16px; /* Horizontal breathing room */
+  box-sizing: border-box; /* Ensure padding doesn't break layout width */
+}
+
+@media (min-width: 769px) {
+  /* Relax slightly on desktop to conserve vertical space, but keep it accessible */
+  .main-nav a,
+  .footer-nav a {
+    min-height: 44px;
+  }
+}
+
+/* [Patch] Accessibility: Touch Target Sizing (Lighthouse) */
+/* WCAG 2.2 Target Size (Minimum): 24x24px */
+/* Google Lighthouse / Android Standard: 48x48px */
+
+/* 1. The Site Brand (Greg's Place) */
+.site-title {
+  display: flex;
+  align-items: center;
+  min-height: 48px; /* Force touch height */
+  padding: 0 8px;   /* Add horizontal breathing room */
+  margin-left: -8px; /* Negative margin to align text visually while keeping hit-box large */
+  text-decoration: none;
+  color: var(--md-sys-color-on-surface);
+}
+
+/* 2. Navigation Links (Home, About, etc.) */
+/* Applies to both Header (.main-nav) and Footer (.footer-nav) */
+.main-nav ul li a,
+.footer-nav ul li a {
+  display: flex;
+  align-items: center;
+  min-height: 48px; /* The Magic Number */
+  padding: 0 16px;  /* Larger tap area width */
+  
+  /* Ensure padding is included in width calculations */
+  box-sizing: border-box; 
+  
+  /* Visual: Center text vertically */
+  line-height: 1.2; 
+}
+
+/* 3. Footer Links Specifics */
+/* Ensure they don't collapse on mobile */
+.footer-nav a {
+  justify-content: center; /* Center align in footer */
+}

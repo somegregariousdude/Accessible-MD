@@ -1,0 +1,52 @@
+[[main]]
+  name = "Home"
+  url = "/"
+  weight = 100
+[[main]]
+  name = "About"
+  url = "/about/"
+  weight = 200
+[[main]]
+  name = "Articles"
+  url = "/articles/"
+  weight = 300
+[[main]]
+  name = "Status Updates"
+  url = "/status/"
+  weight = 400
+[[main]]
+  name = "Photos"
+  url = "/photos/"
+  weight = 500
+[[main]]
+  name = "Replies"
+  url = "/replies/"
+  weight = 600
+[[main]]
+  name = "Reposts"
+  url = "/reposts/"
+  weight = 700
+[[main]]
+  name = "Likes"
+  url = "/likes/"
+  weight = 800
+[[main]]
+  name = "Bookmarks"
+  url = "/bookmarks/"
+  weight = 900
+[[main]]
+  name = "RSVPs"
+  url = "/rsvps/"
+  weight = 1000
+[[main]]
+  name = "Guestbook"
+  url = "/guestbook/"
+  weight = 1100
+[[main]]
+  name = "Contact"
+  url = "/contact/"
+  weight = 1200
+[[main]]
+  name = "Search"
+  url = "/search/"
+  weight = 1300

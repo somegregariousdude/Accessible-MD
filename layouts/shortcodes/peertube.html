@@ -1,0 +1,48 @@
+{{- $instance := .Get "instance" | default (.Get 0) -}}
+{{- $id := .Get "id" | default (.Get 1) -}}
+{{- $title := .Get "title" | default (.Get 2) | default "Play PeerTube Video" -}}
+{{- $videoUrl := printf "https://%s/w/%s" $instance $id -}}
+
+<div class="peertube-lite outlined-card" 
+     data-instance="{{ $instance }}" 
+     data-id="{{ $id }}" 
+     role="button" 
+     tabindex="0" 
+     aria-label="{{ $title }}"
+     title="{{ $title }}">
+  
+  {{- /* Corrected Hugo try function usage (v0.141+) */ -}}
+  {{- $thumb := "" -}}
+  {{- $oembedUrl := printf "https://%s/services/oembed?url=%s" $instance $videoUrl -}}
+  
+  {{- with try (resources.GetRemote $oembedUrl) -}}
+    {{- with .Err -}}
+       {{- /* Log warning but build continues */ -}}
+       {{- warnf "PeerTube oEmbed fetch failed for %s: %s" $id . -}}
+    {{- else with .Value -}}
+       {{- /* JSON Unmarshal from remote resource */ -}}
+       {{- $data := .Content | transform.Unmarshal -}}
+       {{- with try (resources.GetRemote $data.thumbnail_url) -}}
+         {{- with .Value -}}
+           {{- /* Optimize thumbnail locally for performance */ -}}
+           {{- $thumb = .Fill "1280x720 webp" -}}
+         {{- end -}}
+       {{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- if $thumb -}}
+    <img src="{{ $thumb.RelPermalink }}" class="u-photo" alt="Video Thumbnail" loading="lazy">
+  {{- else -}}
+    {{- /* Fallback UI using the peertube icon we recently added */ -}}
+    <div class="video-fallback-card" aria-hidden="true">
+      {{ partial "icons/peertube.svg" . }}
+      <p>Watch on {{ $instance }}</p>
+    </div>
+  {{- end -}}
+  
+  {{- /* IndieWeb Microformats */ -}}
+  <a href="{{ $videoUrl }}" class="u-video" style="display:none;" aria-hidden="true">Watch on PeerTube</a>
+  
+  <div class="play-button" aria-hidden="true"></div>
+</div>

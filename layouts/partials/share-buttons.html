@@ -1,0 +1,43 @@
+{{ $bluesky := index (where .Site.Params.social "name" "BlueSky") 0 }}
+{{ $mastodon := index (where .Site.Params.social "name" "Mastodon") 0 }}
+{{ $friendica := index (where .Site.Params.social "name" "Friendica") 0 }}
+
+<section class="share-card outlined-card">
+  <h3>Share this</h3>
+  <div class="share-buttons-row">
+    <a href="https://bsky.app/intent/compose?text={{ .Title | urlquery }}%20{{ .Permalink | urlquery }}{{ if $bluesky }}%20via%20{{ $bluesky.handle | urlquery }}{{ end }}" 
+       target="_blank" rel="noopener noreferrer" class="share-btn" aria-label="Share on BlueSky">
+       {{ partial "icons/bluesky.svg" . }}
+    </a>
+    
+    <button class="share-btn fediverse-btn" data-network="Friendica" data-placeholder="social.trom.tf"
+            {{ if $friendica }}data-handle="{{ $friendica.handle }}"{{ end }} aria-label="Share on Friendica" aria-haspopup="dialog">
+       {{ partial "icons/friendica.svg" . }}
+    </button>
+
+    <button class="share-btn fediverse-btn" data-network="Lemmy" data-placeholder="rblind.com"
+            aria-label="Share on Lemmy" aria-haspopup="dialog">
+       {{ partial "icons/lemmy.svg" . }}
+    </button>
+
+    <button class="share-btn fediverse-btn" data-network="Mastodon" data-placeholder="dragonscave.space"
+            {{ if $mastodon }}data-handle="{{ $mastodon.handle }}"{{ end }} aria-label="Share on Mastodon" aria-haspopup="dialog">
+       {{ partial "icons/mastodon.svg" . }}
+    </button>
+  </div>
+</section>
+
+<dialog id="fedi-share-dialog" class="outlined-card">
+  <form method="dialog">
+    <h3 id="dialog-title">Share to the Fediverse</h3>
+    <p>Enter your <span id="network-name">instance</span> domain:</p>
+    <div class="form-group">
+      <label for="fedi-domain" class="sr-only">Instance Domain</label>
+      <input type="text" id="fedi-domain" placeholder="your-instance.com" required>
+    </div>
+    <div class="dialog-actions">
+      <button value="cancel" class="button-secondary">Cancel</button>
+      <button id="fedi-go-btn" type="button" class="button-primary">Share</button>
+    </div>
+  </form>
+</dialog>

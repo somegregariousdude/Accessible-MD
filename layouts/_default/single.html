@@ -1,0 +1,116 @@
+{{ define "main" }}
+{{ $isNote := false }}{{ if or (in .Params.tags "Note") (in .Params.tags "Thought") (in .Params.tags "Journal") }}{{ $isNote = true }}{{ end }}
+
+<article class="single-post h-entry outlined-card {{ .Type }} {{ if $isNote }}is-note{{ end }}">
+  
+  {{/* METADATA BLOCK: Hidden */}}
+  <div style="display: none;">
+    <div class="p-author h-card">
+      <a href="{{ .Site.BaseURL }}" class="u-url p-name">{{ .Site.Params.author.name }}</a>
+      <img src="{{ .Site.Params.author.photo | absURL }}" class="u-photo" alt="{{ .Site.Params.author.name }}">
+    </div>
+    <a href="{{ .Permalink }}" class="u-url">Permalink</a>
+  </div>
+
+  <header class="post-header">
+    <div class="headline-row">
+      {{ partial "ui/chip.html" . }}
+      <h1 class="p-name">{{ .Title }}</h1>
+    </div>
+    
+    <div class="post-meta">
+      <div class="meta-item">
+        <span class="meta-icon">{{ partial "icons/event.svg" . }}</span>
+        <div class="meta-text">
+          <time class="dt-published" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+            {{ .Date.Format "Monday, Jan 2, 2006 at 3:04 PM (MST)" }}
+          </time>
+          {{ if ne .Date .Lastmod }}
+          <span class="dt-updated-label">
+            (Updated: <time class="dt-updated" datetime="{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Lastmod.Format "Jan 2, 2006" }}</time>)
+          </span>
+          {{ end }}
+        </div>
+      </div>
+
+      <div class="meta-item">
+        <span class="meta-icon">{{ partial "icons/schedule.svg" . }}</span>
+        <span class="reading-time">{{ .ReadingTime }} min read</span>
+      </div>
+    </div>
+  </header>
+
+  {{/* Context Blocks (Replies, RSVPs, etc) */}}
+  <div class="context-container">
+    {{ if .Params.reply_to }}
+    <div class="context-block reply-context">
+      <span class="context-icon">{{ partial "icons/replies.svg" . }}</span>
+      <span class="context-label">Replying to</span>
+      <a href="{{ .Params.reply_to }}" class="u-in-reply-to context-link">{{ .Params.reply_to | truncate 50 }}</a>
+    </div>
+    {{ end }}
+    {{ if .Params.like_of }}
+    <div class="context-block like-context">
+      <span class="context-icon">{{ partial "icons/likes.svg" . }}</span>
+      <span class="context-label">Liked</span>
+      <a href="{{ .Params.like_of }}" class="u-like-of context-link">{{ .Params.like_of | truncate 50 }}</a>
+    </div>
+    {{ end }}
+    {{ if .Params.repost_of }}
+    <div class="context-block repost-context">
+      <span class="context-icon">{{ partial "icons/reposts.svg" . }}</span>
+      <span class="context-label">Reposted</span>
+      <a href="{{ .Params.repost_of }}" class="u-repost-of context-link">{{ .Params.repost_of | truncate 50 }}</a>
+    </div>
+    {{ end }}
+    {{ if .Params.bookmark_of }}
+    <div class="context-block bookmark-context">
+      <span class="context-icon">{{ partial "icons/bookmarks.svg" . }}</span>
+      <span class="context-label">Bookmarked</span>
+      <a href="{{ .Params.bookmark_of }}" class="u-bookmark-of context-link">{{ .Params.bookmark_of | truncate 50 }}</a>
+    </div>
+    {{ end }}
+    {{ if and .Params.rsvp .Params.reply_to }}
+    <div class="context-block rsvp-context">
+      <span class="context-icon">{{ partial "icons/rsvps.svg" . }}</span>
+      <span class="context-label">RSVP: <strong class="p-rsvp">{{ .Params.rsvp | upper }}</strong> to</span>
+      <a href="{{ .Params.reply_to }}" class="u-in-reply-to context-link">{{ .Params.reply_to | truncate 40 }}</a>
+    </div>
+    {{ end }}
+  </div>
+
+  <div class="e-content">{{ .Content }}</div>
+
+  {{/* WRAPPED FOOTER FOR VISUAL SEPARATION */}}
+  <footer class="post-footer">
+    {{ partial "syndication.html" . }}
+
+    {{ if .Params.tags }}
+    <ul class="tags">
+      {{ range .Params.tags }}
+      <li>
+        <a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}" rel="tag">
+          {{/* [ACCESSIBILITY FIX] Removed aria-hidden="true" */}}
+          <span>#</span><span class="p-category">{{ . }}</span>
+        </a>
+      </li>
+      {{ end }}
+    </ul>
+    {{ end }}
+  </footer>
+</article>
+
+{{ partial "share-buttons.html" . }}
+
+{{ $show := .Params.show_webmentions }}
+{{ if eq $show nil }}
+  {{ $show = .Site.Params.webmentions.show_webmentions }}
+{{ end }}
+
+{{ if $show }}
+  {{ partial "webmentions-card.html" (dict 
+      "context" .
+      "description" "Have your say. Write a post on your own site and link to this URL to appear here!"
+  ) }}
+{{ end }}
+{{ end }}

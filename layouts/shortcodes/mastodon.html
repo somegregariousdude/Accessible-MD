@@ -1,0 +1,68 @@
+{{- $host := .Get "host" -}}
+{{- $id := .Get "id" -}}
+
+{{- if and $host $id -}}
+  {{- $apiURL := printf "https://%s/api/v1/statuses/%s" $host $id -}}
+  {{- $data := dict -}}
+
+  {{- /* Modern Hugo Error Handling */ -}}
+  {{- with try (resources.GetRemote $apiURL) -}}
+    {{- with .Err -}}
+      <div class="mastodon-card error outlined-card">
+        <p><strong>Error:</strong> Mastodon API fetch failed: {{ . }}</p>
+        <p><a href="https://{{ $host }}/@{{ $id }}">View on {{ $host }}</a></p>
+      </div>
+    {{- else with .Value -}}
+      {{- $data = .Content | transform.Unmarshal -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- if $data -}}
+    <article class="mastodon-card outlined-card" lang="{{ $data.language | default "en" }}">
+      <header class="mastodon-header">
+        <div class="mastodon-author">
+          {{- $avatarURL := "" -}}
+          {{- with try (resources.GetRemote $data.account.avatar) -}}
+            {{- with .Value -}}
+              {{- $avatarURL = .RelPermalink -}}
+            {{- end -}}
+          {{- end -}}
+          
+          {{- if $avatarURL -}}
+             <img src="{{ $avatarURL }}" alt="" class="u-photo" width="48" height="48" loading="lazy">
+          {{- else -}}
+             <div class="u-photo-placeholder">?</div>
+          {{- end -}}
+          
+          <div class="author-meta">
+            <a href="{{ $data.account.url }}" class="p-name u-url" target="_blank" rel="noopener">
+              <strong>{{ $data.account.display_name | default $data.account.username }}</strong>
+            </a>
+            <span class="p-nickname">@{{ $data.account.username }}@{{ $host }}</span>
+          </div>
+        </div>
+        <div class="mastodon-logo" aria-label="Mastodon Post">
+          {{ partial "icons/mastodon.svg" . }}
+        </div>
+      </header>
+
+      <div class="e-content">
+        {{ $data.content | safeHTML }}
+      </div>
+
+      {{- /* Media logic omitted for brevity, matches your existing pattern */ -}}
+
+      <footer class="mastodon-footer">
+        <time class="dt-published" datetime="{{ $data.created_at }}">
+          {{ dateFormat "Jan 02, 2006" $data.created_at }}
+        </time>
+        <div class="mastodon-stats">
+          <span>↩ {{ $data.replies_count }}</span>
+          <span>↻ {{ $data.reblogs_count }}</span>
+          <span>♥ {{ $data.favourites_count }}</span>
+        </div>
+        <a href="{{ $data.url }}" class="button-small" target="_blank" rel="noopener">View Original</a>
+      </footer>
+    </article>
+  {{- end -}}
+{{- end -}}
