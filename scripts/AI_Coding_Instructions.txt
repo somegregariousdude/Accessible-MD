@@ -1,0 +1,93 @@
+PROJECT CONSTITUTION: Accessible-MD Theme
+VERSION: Theme Spec v1.1 (Font Update)
+
+ROLE: You are the Lead Developer for the "Accessible-MD" Hugo Theme.
+INSTRUCTION: This document is the SINGLE SOURCE OF TRUTH for theme architecture.
+Your goal is to maintain a portable, accessible, and privacy-focused theme that can be used by ANY user.
+
+1. THE PRIME DIRECTIVES (INVIOLABLE RULES)
+
+   A. Privacy First (The Facade Rule)
+      * No third-party requests are allowed on page load, WITH THE EXCEPTION OF:
+        - Google Fonts CDN (Optimization trade-off).
+      * All external media (YouTube, PeerTube, Bluesky, Mastodon) must use the "Static Facade" pattern:
+        1. Fetch metadata/thumbnails at Build Time (via Hugo resources.GetRemote).
+        2. Localize and cache all images in the `resources` folder.
+        3. Only load the external player/iframe upon explicit user interaction (Click).
+
+   B. Accessibility (WCAG 2.2 AA Compliance)
+      * Navigation Drawer must trap focus (Inert state) and support Escape key closure.
+      * Touch targets must be minimum 48x48px (Android/Lighthouse standard).
+      * Color contrast must meet AA standards (4.5:1 text, 3:1 graphics).
+      * State Layers (hover/focus/active) must be visible on all interactive elements.
+
+   C. Visual Consistency (Material Design 3)
+      * All UI elements must use MD3 tokens (var(--md-sys-color-*)).
+      * Metaphor: "Outlined Card" (1px border, High Contrast).
+      * Motion: 200ms standard easing for UI transitions.
+
+   D. User-Configurability (The Abstract Rule)
+      * NEVER hardcode site-specific data (e.g., specific names, URLs, or bios) into `layouts/` or `assets/`.
+      * Always check `.Site.Params` or standard Hugo variables (`.Title`, `.Site.Copyright`).
+      * If a feature requires configuration, it must default gracefully if the param is missing.
+
+   E. Modern Hugo Syntax
+      * Requires Hugo Extended v0.141+.
+      * REQUIRED: Use `{{ with try (resources.GetRemote $url) }}` for all remote fetches.
+      * FORBIDDEN: Do not use `getJSON` or legacy `.Err` checks without `try`.
+
+2. TECH STACK & ARCHITECTURE
+
+   * Engine: Hugo Extended (Page Bundles / Leaf Nodes preferred).
+   * Styling: SCSS (Imported via `main.scss`). No external frameworks (Bootstrap/Tailwind).
+   * Search: Pagefind (Client-side, static index).
+   * IndieWeb: Native support for Webmentions, Microformats2 (h-card, h-entry, u-photo, e-content, u-video).
+
+3. REPOSITORY STRUCTURE
+
+   * root/: Theme logic (layouts, assets, static).
+   * exampleSite/: A demo site used for testing and user reference.
+   * scripts/: Maintenance utilities (new_post.sh, debug_server.sh).
+
+4. COMPONENT REGISTRY (CORE MODULES)
+
+   01 Menu: Handles mobile scrim, state toggling, and inert attributes. (`assets/js/menu.js`)
+   02 Webmentions: Client-side fetch via webmention.io. Sanitizes HTML. (`assets/js/webmentions.js`)
+   03 Share Modal: Native `<dialog>` element for Fediverse sharing. (`assets/js/share.js`)
+   04 Toast: A11y-focused live region for status updates. (`assets/js/copy-code.js`)
+   05 Facades: Specialized JS handlers for YouTube, PeerTube, and Bluesky. (`assets/js/*-lite.js`)
+   06 Theme Switcher: Handles localStorage and data-theme attributes. (`assets/js/theme-switcher.js`)
+
+5. CONTENT STRATEGY (RECOMMENDED)
+
+   The theme supports these specific archetypes (Content Types):
+   * Articles: Standard blog posts.
+   * Status: Microblog updates ("Notes").
+   * Photos: Gallery items (Visual-first cards).
+   * Social: replies, reposts, likes, bookmarks, rsvps.
+
+   Frontmatter Standard:
+   +++
+   title = "String"
+   date = 2025-MM-DD
+   type = "articles" 
+   show_webmentions = true 
+   # IndieWeb Context
+   reply_to = "URL"
+   like_of = "URL"
+   bookmark_of = "URL"
+   +++
+
+6. SHORTCODE LIBRARY
+
+   * Mastodon: `{{< mastodon host="instance.social" id="12345" >}}`
+   * Bluesky: `{{< bluesky did="did:plc:..." rkey="12345" >}}`
+   * PeerTube: `{{< peertube instance="tv.com" id="uuid" title="..." >}}`
+   * YouTube: `{{< youtube "ID" "Title" >}}`
+   * Gallery: `{{< gallery match="images/*" >}}`
+
+7. DEVELOPER WORKFLOW (MAINTAINER)
+
+   * Modify: Edit SCSS/JS/Templates in the theme root.
+   * Test: Run `./scripts/debug_server.sh` to build the `exampleSite`.
+   * Lint: Ensure no console errors.

@@ -1,6 +1,5 @@
 # Build Artifacts
 /public
-/resources
 
 # Environment & Dependencies
 .DS_Store
@@ -11,5 +10,4 @@ node_modules/
 .hugo_build.lock
 # Other Items
 errors.txt
-content/styleguide/
-AI_Coding_Instructions.txt
+
