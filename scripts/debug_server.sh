@@ -10,18 +10,9 @@ LOG_FILE="errors.txt"
 pkill hugo > /dev/null 2>&1
 
 echo "--- New Session: $(date) ---" > "$LOG_FILE"
-echo "Starting Hugo Server (Theme Mode)..."
+echo "Starting Hugo Server..."
 
-# Run Hugo pointing to exampleSite
-hugo server \
-  --source exampleSite \
-  --themesDir ../.. \
-  --theme . \
-  --disableFastRender \
-  -D -E -F \
-  --gc \
-  --printI18nWarnings \
-  > "$LOG_FILE" 2>&1 &
+hugo server --disableFastRender -D -E -F --gc --printI18nWarnings > "$LOG_FILE" 2>&1 &
 
 HUGO_PID=$!
 echo "✅ Hugo is running using exampleSite (PID: $HUGO_PID)."
