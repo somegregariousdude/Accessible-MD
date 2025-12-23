@@ -64,7 +64,7 @@ declare -A SOCIAL_ICONS=(
     ["mastodon"]="mastodon"
     ["peertube"]="peertube"
     ["signal"]="signal"
-    ["simplex"]="simplex"
+    ["xmpp"]="xmpp"
     ["youtube"]="youtube"
 )
 
@@ -77,11 +77,13 @@ for NAME in "${!SOCIAL_ICONS[@]}"; do
          echo "  ✓ $NAME"
     else
          echo "  X Failed: $NAME (Creating fallback)"
+         # Create a generic fallback (square)
          echo '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>' > "$TARGET"
     fi
 done
 
-# 4. SPECIAL PROVISIONS (Icons not in Simple Icons)
+# 4. SPECIAL PROVISIONS (Icons not in Simple Icons or needing overrides)
+
 # Friendica must be fetched from their development repository
 TARGET="$ICON_DIR/friendica.svg"
 URL="https://raw.githubusercontent.com/friendica/friendica/develop/images/friendica.svg"
@@ -89,6 +91,19 @@ if curl -s -L -f "$URL" -o "$TARGET"; then
     echo "  ✓ friendica"
 else 
     echo "  X Failed friendica"
+fi
+
+# XMPP (Jabber) - Check if Simple Icons fetch succeeded (it often lacks XMPP). 
+# If the file is the generic fallback (contains "rect"), try fetching the official logo.
+TARGET="$ICON_DIR/xmpp.svg"
+if grep -q "rect" "$TARGET"; then
+    echo "  ! Simple Icons missing XMPP. Attempting official source..."
+    URL="https://raw.githubusercontent.com/xmpp/xmpp-brand/master/logo-and-icon/icon/xmpp-icon.svg"
+    if curl -s -L -f "$URL" -o "$TARGET"; then
+        echo "  ✓ xmpp (Official)"
+    else
+        echo "  X Failed XMPP official fetch (Kept fallback)"
+    fi
 fi
 
 echo "Icon generation complete."
